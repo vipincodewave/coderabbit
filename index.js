@@ -28,7 +28,6 @@ app.get("/hello-world", (req, res, next) => {
   });
 });
 
-
 app.post("/hello-world/:id", (req, res, next) => {
   const requestBody = req.body
   return res.status(200).json({
@@ -39,11 +38,25 @@ app.post("/hello-world/:id", (req, res, next) => {
 
 app.post("/hell/:id", (req, res, next) => {
   const requestBody = req.body
-  return res.status(201).json({
+  return res.status(200).json({
     message: "Hello from hi!",
     data:requestBody
   });
 });
+
+app.get("/custom-error", (req, res, next) => {
+  throw new Error("This is a custom error");
+});
+
+app.get('/custom-error/:id', (req, res, next) => {
+  const id = parseInt(req.params.id);
+  if (Number.isNaN(id)) {
+    throw new Error("Invalid id");
+  }
+  return res.status(200).json({
+    message: `Hello from custom error with id: ${id}`,
+  });
+})
 
 app.use((req, res, next) => {
   return res.status(404).json({
